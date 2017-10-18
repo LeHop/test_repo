@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  *
  * @author hoppe
  */
-public class Example1 {
+public class Example3 {
 
     /**
      * @param args the command line arguments
@@ -40,16 +40,15 @@ public class Example1 {
         carList.add(new Car("mercedes", "2015"));
 
         Observable.fromArray(carList)
-                .flatMap(i -> Observable.just(i)
+                .map(i -> process(i))
                 .subscribeOn(scheduler)
-                ).buffer(threadCt)
+                .buffer(threadCt)
                 .doFinally(() -> executor.shutdown())
                 .subscribe(t -> resultObservableList(t));
     }
 
-    private static long randInt(int min, int max) {
-        Random r = new Random();
-        return r.nextInt(max - min + 1) + min;
+    private static List<Car> process(List<Car> car) {
+        return car;
     }
 
     private static void resultObservableList(List<List<Car>> list) {
